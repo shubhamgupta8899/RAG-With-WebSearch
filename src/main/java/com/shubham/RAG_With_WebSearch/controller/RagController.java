@@ -16,33 +16,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class RagController {
 
     private ChatClient chatClient;
-    private VectorStore vectorStore;
 
 
-    public RagController(ChatClient chatClient, VectorStore vectorStore){
+    public RagController(ChatClient chatClient){
 
         this.chatClient = chatClient;
-        this.vectorStore = vectorStore;
+
     }
 
-    @Value("classpath:/promptTemplates/ragTemplate.st")
-    Resource promptTemplate;
-    @Value("classpath:/promptTemplates/systemTemplate.st")
-    Resource systemTemplate;
 
-    @GetMapping("/chat")
-    public ResponseEntity<String> chat(@RequestParam String question){
-
-        String ans = chatClient.prompt()
-
-                .user(question)
-                .call()
-                .content();
-        return ResponseEntity.ok(ans);
-    }
-
-    @GetMapping("/chat/pdf")
-    public ResponseEntity<String> chatPdf(@RequestParam String question){
+    @GetMapping("/chat/web")
+    public ResponseEntity<String> webChat(@RequestParam String question){
 
 
         String ans = chatClient.prompt()
@@ -52,6 +36,7 @@ public class RagController {
 
         return ResponseEntity.ok(ans);
     }
+
 
 
     // To check if document is null or not
@@ -66,6 +51,4 @@ public class RagController {
         return content;
 
     }
-
-
 }
